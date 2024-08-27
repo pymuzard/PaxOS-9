@@ -57,6 +57,13 @@ LuaFile::LuaFile(storage::Path filename, storage::Path manifest)
 
 LuaFile::~LuaFile()
 {
+    // prevent a crash if the app is deleted and one or more callbacks are defined
+    this->onmessage = sol::nil;
+    this->onmessageerror = sol::nil;
+    this->oncall = sol::nil;
+    this->onlowbattery = sol::nil;
+    this->oncharging = sol::nil;
+
     // libérer les ressources (events, etc)
 }
 
@@ -70,7 +77,7 @@ void* custom_allocator(void *ud, void *ptr, size_t osize, size_t nsize) {
         return NULL;
     } else {
         // Allocate or resize the block
-        #ifdef ESP32
+        #ifdef ESP_PLATFORM
             return ps_realloc(ptr, nsize);
         #else
             return realloc(ptr, nsize);

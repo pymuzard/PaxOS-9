@@ -1,5 +1,6 @@
 #include <launcher.hpp>
-
+#include "graphics.hpp"
+#include "ElementBase.hpp"
 #include <app.hpp>
 #include <gsm.hpp>
 #include <gui.hpp>
@@ -58,23 +59,30 @@ int launcher()
     date->setFontSize(16);
     win.addChild(date);
 
-    // Affichage du niveau de batterie
+    Box *light = new Box(0, 77, 50, 325);
+    //light->setBackgroundColor(COLOR_RED);
+    win.addChild(light);
+
     Label *batt = new Label(269, 10, 40, 18);
-    batt->setText(std::to_string(GSM::getBatteryLevel()) +" %");
+    batt->setText(std::to_string(GSM::getBatteryLevel()) + "%");    // hour
     batt->setVerticalAlignment(Label::Alignement::CENTER);
     batt->setHorizontalAlignment(Label::Alignement::CENTER);
     batt->setFontSize(18);
     win.addChild(batt);
 
-    // Affichage de la qualité réseau
+    Label *network = new Label(10, 10, 100, 18);
+    network->setVerticalAlignment(Label::Alignement::CENTER);
+    network->setHorizontalAlignment(Label::Alignement::LEFT);
+    network->setFontSize(18);
+    win.addChild(network);
+
     if(GSM::getNetworkStatus() == 99)
     {
-        Label *network = new Label(10, 10, 100, 18);
-        network->setText("pas de réseau");    // hour
-        network->setVerticalAlignment(Label::Alignement::CENTER);
-        network->setHorizontalAlignment(Label::Alignement::CENTER);
-        network->setFontSize(18);
-        win.addChild(network);
+        network->setText(" pas de réseau");    // hour
+    }
+    else
+    {
+        network->setText(" " + std::to_string(GSM::getNetworkStatus() * 100 / 31) + "%");
     }
 
     // Mise à jour de l'heure
@@ -155,20 +163,17 @@ int launcher()
  * test pour le network
  ***********************************/
 
-
     Label* networkLabel = new Label(20, 40, 20, 20);
     networkLabel->setBackgroundColor(COLOR_DARK);
     networkLabel->setText("Network");
     networkLabel->setTextColor(COLOR_WHITE);
     networkLabel->setFontSize(16);
     win.addChild(networkLabel);
-
-    Label* progressLabel = new Label(10, 420, 0, 20);
+  
+    Label* progressLabel = new Label(10, 400, 0, 20);
     progressLabel->setBackgroundColor(COLOR_SUCCESS);
     win.addChild(progressLabel);
-
-
-// //////////////////////////////////////////////////
+  // //////////////////////////////////////////////////
 
     while (!hardware::getHomeButton() && AppManager::isAnyVisibleApp() == false)
     {
@@ -181,11 +186,21 @@ int launcher()
             }
         }
 
-        eventHandlerApp.update();
+        if (light->isFocused(true))
+        {
+            std::cout << "brightness: " << graphics::brightness << std::endl;
+            graphics::brightness = (325 - (gui::ElementBase::touchY - 77)) * 255 / 325;
+            if(graphics::brightness > 255)
+                graphics::brightness = 255;
+            else if(graphics::brightness < 3)
+                graphics::brightness = 3;
+            graphics::setBrightness(graphics::brightness);
+        }
 
-/************************************
- * test pour le network
- ***********************************/
+        eventHandlerApp.update();
+      /************************************
+       * test pour le network
+       ***********************************/
 
        if (networkLabel->isTouched())
         {
@@ -217,7 +232,7 @@ int launcher()
             };
             getTask->uploadProgressHandler = [](double progress)
             {
-                //std::cout << "Received upload progress " << progress << std::endl;
+                std::cout << "Received upload progress " << progress << std::endl;
             };
 
             getTask->resume();
@@ -250,8 +265,7 @@ int launcher()
 
             postTask->resume();
         }
-// //////////////////////////////////////////////////
-
+        // //////////////////////////////////////////////////
         win.updateAll();
 
         AppManager::loop();
