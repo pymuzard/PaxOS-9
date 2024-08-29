@@ -396,7 +396,6 @@ function displayHourlyMeteo(dataToDisplay, day)
             lblSwitch:setRadius(10)
             lblSwitch:setBorderColor(COLOR_GREY)
             lblSwitch:onClick(switchDisplayMeteoData)
-            lblSwitch:onClick(switchDisplayMeteoData)
         end
             if (modeDisplay == "day") then
             lblSwitch:setText(" Semaine... ")

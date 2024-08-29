@@ -9,3 +9,4 @@
 ./storage/apps/alarme/app.lua
 ./storage/apps/calculatrice/app.lua
 ./storage/apps/meteo/app.lua
+./storage/apps/demineur/app.lua

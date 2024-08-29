@@ -297,6 +297,7 @@ void LuaFile::load()
 
         lua.new_usertype<LuaBox>("LuaBox",
             "setRadius", &LuaBox::setRadius,
+            "clear", &LuaBox::clear,
             sol::base_classes, sol::bases<LuaWidget>());
 
         lua.new_usertype<LuaCanvas>("LuaCanvas",

@@ -158,7 +158,7 @@ namespace gui::elements
     void Canvas::drawText(int16_t x, int16_t y, std::string& text, color_t color, float fontSize)
     {
         StandbyMode::triggerPower();
-        this->getAndSetSurface()->setFontSize(x);
+        this->getAndSetSurface()->setFontSize(fontSize);
         this->getAndSetSurface()->drawText(text, x, y, color);
         this->localGraphicalUpdate();
     }
