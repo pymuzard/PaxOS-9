@@ -13,7 +13,8 @@
  */
 typedef uint16_t color_t;
 
-namespace graphics {
+namespace graphics
+{
     /**
      * Create a RGB565 value from 3 8-bit RGB components.
      * @param r The red component.
@@ -41,7 +42,8 @@ namespace graphics {
      * @param b The blue component.
      * @return A RGB565 color.
      */
-    constexpr color_t constPackRGB565(const uint8_t r, const uint8_t g, const uint8_t b) {
+    constexpr color_t constPackRGB565(const uint8_t r, const uint8_t g, const uint8_t b)
+    {
         uint16_t rgb = 0;
 
         rgb |= (r >> 3) << 11;
@@ -58,28 +60,23 @@ namespace graphics {
 #define COLOR_WARNING 0xFE00
 #define COLOR_ERROR 0xD9A8
 
+#define COLOR_WHITE graphics::packRGB565(255, 255, 255)
+#define COLOR_BLACK graphics::packRGB565(0, 0, 0)
+#define COLOR_RED graphics::packRGB565(255, 0, 0)
+#define COLOR_GREEN graphics::packRGB565(0, 128, 0)
+#define COLOR_BLUE graphics::packRGB565(0, 0, 255)
 
-// #define COLOR_WHITE 0xFFFF
-// #define COLOR_BLACK 0x0000
-// #define COLOR_GREY 0x8410
+#define COLOR_YELLOW graphics::packRGB565(255, 255, 0)
+#define COLOR_GREY graphics::packRGB565(128, 128, 128)
+#define COLOR_MAGENTA graphics::packRGB565(255, 0, 255)
+#define COLOR_CYAN graphics::packRGB565(0, 255, 255)
+#define COLOR_VIOLET graphics::packRGB565(128, 0, 128)
+#define COLOR_ORANGE graphics::packRGB565(255, 165, 0)
+#define COLOR_PINK graphics::packRGB565(255, 192, 203)
 
-#define COLOR_WHITE         graphics::constPackRGB565(255, 255, 255)
-#define COLOR_BLACK         graphics::constPackRGB565(0, 0, 0)
-#define COLOR_RED           graphics::constPackRGB565(255, 0, 0)
-#define COLOR_GREEN         graphics::constPackRGB565(0, 128, 0)
-#define COLOR_BLUE          graphics::constPackRGB565(0, 0, 255)
+#define COLOR_LIGHT_GREEN graphics::packRGB565(0, 255, 0)
+#define COLOR_LIGHT_ORANGE graphics::packRGB565(255, 213, 128)
+#define COLOR_LIGHT_BLUE graphics::packRGB565(173, 216, 230)
+#define COLOR_LIGHT_GREY graphics::packRGB565(211, 211, 211)
 
-#define COLOR_YELLOW        graphics::constPackRGB565(255, 255, 0)
-#define COLOR_GREY          graphics::constPackRGB565(128, 128, 128)
-#define COLOR_MAGENTA       graphics::constPackRGB565(255, 0, 255)
-#define COLOR_CYAN          graphics::constPackRGB565(0, 255, 255)
-#define COLOR_VIOLET        graphics::constPackRGB565(128, 0, 128)
-#define COLOR_ORANGE        graphics::constPackRGB565(255, 165, 0)
-#define COLOR_PINK          graphics::constPackRGB565(255,192,203)
-
-#define COLOR_LIGHT_GREEN   graphics::constPackRGB565(0, 255, 0)
-#define COLOR_LIGHT_ORANGE  graphics::constPackRGB565(255, 213, 128)
-#define COLOR_LIGHT_BLUE    graphics::constPackRGB565(173,216,230)
-#define COLOR_LIGHT_GREY    graphics::constPackRGB565(211,211,211)
-
-#endif //COLOR_HPP
+#endif // COLOR_HPP
