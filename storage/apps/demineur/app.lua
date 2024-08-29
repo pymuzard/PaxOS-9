@@ -317,7 +317,7 @@ function clickCase(x,y)
     local box = grid[x][y].box
     -- si on a activé l'action Flag, on affiche/masque le drapeau et on désactive l'action Flag
     if (flagAction) then
-        setFlagAction()
+        -- setFlagAction()
         if (grid[x][y].flag) then
             grid[x][y].flag = false
             changeMineNum(true)
