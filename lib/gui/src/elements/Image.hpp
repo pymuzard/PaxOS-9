@@ -8,7 +8,7 @@ namespace gui::elements
 {
     /**
      * @brief Widget image: can load an image from a path with a background or not. Support png, jpeg and bmp
-    **/
+     **/
     class Image final : public ElementBase
     {
     public:
@@ -18,7 +18,7 @@ namespace gui::elements
         void render() override;
 
         void load(color_t background = COLOR_WHITE);
-        void setTransparentColor(color_t color);
+        void setTransparentColor(color_t);
 
     private:
         storage::Path m_path;
@@ -26,4 +26,4 @@ namespace gui::elements
     };
 } // gui::elements
 
-#endif //BOX_HPP
+#endif // BOX_HPP

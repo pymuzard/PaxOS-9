@@ -5,10 +5,10 @@
 
 class LuaImage : public LuaWidget
 {
-    public:
-    LuaImage(LuaWidget* parent, storage::Path path, int x, int y, int width, int height, color_t background = COLOR_WHITE);
+public:
+    LuaImage(LuaWidget *parent, storage::Path path, int x, int y, int width, int height, color_t background = COLOR_WHITE);
     void setTransparentColor(color_t color);
-    Image* widget = nullptr;
+    Image *widget = nullptr;
 };
 
 #endif
