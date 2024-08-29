@@ -425,6 +425,7 @@ void LuaFile::load()
                                     "setBorderColor", &LuaWidget::setBorderColor,
                                     "setBorderSize", &LuaWidget::setBorderSize,
                                     "setRadius", &LuaWidget::setRadius,
+                                    "clear", &LuaWidget::clear,
                                     "getChildAtIndex", &LuaWidget::getChildAtIndex
 
         );

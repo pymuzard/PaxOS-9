@@ -165,3 +165,12 @@ void LuaWidget::update()
         children[i]->update();
     }
 }
+
+void LuaWidget::clear()
+{
+
+    while (!this->children.empty())
+    {
+        delete this->children[0];
+    }
+}
