@@ -18,7 +18,7 @@
 namespace graphics
 {
     class SImage;
-    
+
     class Surface
     {
         friend void showSurface(const Surface *surface);
@@ -68,7 +68,6 @@ namespace graphics
 
         void drawLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2, color_t color);
 
-        bool saveAsJpg(const storage::Path filename);
         void drawImage(const SImage &image, int16_t x, int16_t y, uint16_t w = 0, uint16_t h = 0);
 
         void setFont(EFont font);
@@ -83,10 +82,11 @@ namespace graphics
 
         [[nodiscard]] Surface clone() const;
 
-        [[nodiscard]] void * getBuffer() const;
-        void setBuffer(void* buffer, int32_t w = -1, int32_t h = -1);
+        [[nodiscard]] void *getBuffer() const;
+        void setBuffer(void *buffer, int32_t w = -1, int32_t h = -1);
 
-        enum Filter {
+        enum Filter
+        {
             BLUR,
             LIGHTEN,
             DARKEN

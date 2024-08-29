@@ -20,10 +20,13 @@ namespace gui::ImagesList
 
     std::vector<ImageLoaded> images;
 
-    std::shared_ptr<graphics::Surface> loadImage(storage::Path path, uint16_t width, uint16_t height, const color_t backgroundColor = 0xFFFF) {
+    std::shared_ptr<graphics::Surface> loadImage(storage::Path path, uint16_t width, uint16_t height, const color_t backgroundColor = 0xFFFF)
+    {
         // ReSharper disable once CppUseStructuredBinding
-        for (const auto& image : images) {
-            if (image.path.str() == path.str() && image.width == width && image.height == height) {
+        for (const auto &image : images)
+        {
+            if (image.path.str() == path.str() && image.width == width && image.height == height)
+            {
                 return image.surface;
             }
         }
@@ -34,14 +37,14 @@ namespace gui::ImagesList
 
         ImageLoaded img = {
             path,
-            width, // i.getWidth(),
-            height, // i.getHeight(),
-            std::make_shared<graphics::Surface>(width, height)
-        };
+            i.getWidth(),
+            i.getHeight(),
+            std::make_shared<graphics::Surface>(width, height)};
 
         // Clear the background if it's a transparent image ?
         // I guess so ?
-        if(i.getType() != graphics::ImageType::BMP) {
+        if (i.getType() != graphics::ImageType::BMP)
+        {
             img.surface->clear(backgroundColor);
         }
 
@@ -60,7 +63,7 @@ namespace gui::ImagesList
             if (img->surface.unique())
             {
                 img = images.erase(img);
-                //std::cout << "[Image] image deleted" << std::endl;
+                // std::cout << "[Image] image deleted" << std::endl;
             }
             else
             {
@@ -90,19 +93,20 @@ namespace gui::elements
 
     void Image::render()
     {
-        if(m_isRendered == false)
+        if (m_isRendered == false)
             load(m_backgroundColor);
     }
 
-    void Image::setTransparentColor(color_t color){
-        if ( ! m_surface) {
-            //std::cout << "[Image] m_surface is null";
+    void Image::setTransparentColor(color_t color)
+    {
+        if (!m_surface)
+        {
+            // std::cout << "[Image] m_surface is null";
             load(color);
         }
         m_surface->setTransparentColor(color);
         m_surface->setTransparency(true);
     }
-
 
     void Image::load(color_t background)
     {
@@ -110,9 +114,11 @@ namespace gui::elements
         localGraphicalUpdate();
     }
 
-        void Image::setTransparentColor(color_t color){
-        if ( ! m_surface) {
-            //std::cout << "[Image] m_surface is null";
+    void Image::setTransparentColor(color_t color)
+    {
+        if (!m_surface)
+        {
+            // std::cout << "[Image] m_surface is null";
             load(color);
         }
         m_surface->setTransparentColor(color);
