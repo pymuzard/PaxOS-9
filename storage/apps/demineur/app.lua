@@ -338,10 +338,7 @@ function clickCase(x,y)
         local box = grid[x][y].box
         local img = gui:image(box, "bombe.png",0, 0, sizeCase-espacementBox, sizeCase-espacementBox, COLOR_RED)
         grid[x][y].revealed = true
-        --print("Game Over! You hit a mine.")
         gameover()
-       -- return
-        -- break
     else
         revealCell(x, y)
     end
@@ -360,10 +357,7 @@ function updateGrid()
                 local box = grid[x][y].box
 
                 if grid[x][y].mine  then
-                    --local img = gui:image(box, "bombe.png",0, 0, sizeCase-espacementBox, sizeCase-espacementBox, COLOR_LIGHT_GREY)
-                    -- print("Game Over! You hit a mine.")
-                    --gameover()
-                    --return
+                    -- on est sur une mine !
                 else
                     box:setBackgroundColor(COLOR_LIGHT_GREY)
                     if (grid[x][y].adjacentMines > 0) then
@@ -438,47 +432,3 @@ function revealCell(x, y)
     end
 end
 
-
-
-
-
--- ----------------------------------
--- ----------------------------------
--- ----------------------------------
--- ----------------------------------
--- ----------------------------------
-
--- Function to print the grid
-local function printGrid()
-    for x = 1, gridSize do
-        for y = 1, gridSize do
-            if grid[x][y].revealed then
-                if grid[x][y].mine then
-                    io.write("* ")
-                else
-                    io.write(grid[x][y].adjacentMines .. " ")
-                end
-            else
-                io.write(". ")
-            end
-        end
-        io.write("\n")
-    end
-end
-
--- Main game loop
-local function playGame()
-    placeMines()
-    calculateAdjacentMines()
-    while true do
-        printGrid()
-        io.write("Enter coordinates to reveal (x y): ")
-        local x, y = io.read("*n", "*n")
-        if grid[x][y].mine then
-            print("Game Over! You hit a mine.")
-            break
-        else
-            revealCell(x, y)
-        end
-    end
-end
