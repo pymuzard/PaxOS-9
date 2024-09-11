@@ -5,7 +5,6 @@
 #include <path.hpp>
 
 #include <iostream>
-#include <libsystem.hpp>
 
 namespace gui::ImagesList
 {
@@ -63,7 +62,7 @@ namespace gui::ImagesList
             if (img->surface.unique())
             {
                 img = images.erase(img);
-                // std::cout << "[Image] image deleted" << std::endl;
+                std::cout << "[Image] image deleted" << std::endl;
             }
             else
             {
@@ -112,16 +111,5 @@ namespace gui::elements
     {
         m_surface = gui::ImagesList::loadImage(this->m_path, this->m_width, this->m_height, background);
         localGraphicalUpdate();
-    }
-
-    void Image::setTransparentColor(color_t color)
-    {
-        if (!m_surface)
-        {
-            // std::cout << "[Image] m_surface is null";
-            load(color);
-        }
-        m_surface->setTransparentColor(color);
-        m_surface->setTransparency(true);
     }
 }

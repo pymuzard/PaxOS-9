@@ -418,17 +418,16 @@ void LuaFile::load()
                                     "getWidth", &LuaWidget::getWidth,
                                     "getHeight", &LuaWidget::getHeight,
                                     "setBackgroundColor", &LuaWidget::setBackgroundColor,
+                                    "setBorderColor", &LuaWidget::setBorderColor,
+                                    "setRadius", &LuaWidget::setRadius,
+                                    "setBorderSize", &LuaWidget::setBorderSize,
+                                    "clear", &LuaWidget::clear,
                                     "enable", &LuaWidget::enable,
                                     "disable", &LuaWidget::disable,
+                                    "isEnabled", &LuaWidget::isEnabled,
                                     "isTouched", &LuaWidget::isTouched,
                                     "onClick", &LuaWidget::onClick,
-                                    "setBorderColor", &LuaWidget::setBorderColor,
-                                    "setBorderSize", &LuaWidget::setBorderSize,
-                                    "setRadius", &LuaWidget::setRadius,
-                                    "clear", &LuaWidget::clear,
-                                    "getChildAtIndex", &LuaWidget::getChildAtIndex
-
-        );
+                                    "getChildAtIndex", &LuaWidget::getChildAtIndex);
 
         lua.new_usertype<LuaWindow>("LuaWindow",
                                     sol::constructors<LuaWindow (*)()>(), // Empty constructor
