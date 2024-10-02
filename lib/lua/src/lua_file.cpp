@@ -460,6 +460,7 @@ void LuaFile::load()
 
         lua.new_usertype<LuaImage>("LuaImage",
                                    "setTransparentColor", &LuaImage::setTransparentColor,
+
                                    sol::base_classes, sol::bases<LuaWidget>());
 
         lua.new_usertype<LuaLabel>("LuaLabel",

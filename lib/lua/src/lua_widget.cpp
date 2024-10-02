@@ -174,3 +174,11 @@ void LuaWidget::clear()
         delete this->children[0];
     }
 }
+
+void LuaWidget::addChild(LuaWidget *child)
+{
+    this->children.push_back(child);
+    child->parent = this;
+    this->widget->addChild(child->widget);
+}
+}

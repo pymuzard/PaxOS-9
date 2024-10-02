@@ -654,9 +654,9 @@ gui::ElementBase *gui::ElementBase::getElementAt(int index)
 
 #include "elements/Window.hpp"
 
-void gui::ElementBase::freeRamFor(uint32_t size, ElementBase* window)
+void gui::ElementBase::freeRamFor(uint32_t size, ElementBase *window)
 {
-    #ifdef ESP_PLATFORM
+#ifdef ESP_PLATFORM
     size_t free = heap_caps_get_largest_free_block(MALLOC_CAP_8BIT);
 
     if (free < size + 1000000)
@@ -664,11 +664,11 @@ void gui::ElementBase::freeRamFor(uint32_t size, ElementBase* window)
         std::cout << "Not enough RAM, free : " << free << " need : " << size << "\n     -> will free other windows" << std::endl;
         for (auto i : gui::elements::Window::windows)
         {
-            if(i != window)
+            if (i != window)
             {
                 i->free();
             }
         }
     }
-    #endif
+#endif
 }

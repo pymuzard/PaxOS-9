@@ -11,4 +11,5 @@ public:
     Image *widget = nullptr;
 };
 
+
 #endif
