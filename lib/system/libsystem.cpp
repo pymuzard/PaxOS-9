@@ -22,10 +22,9 @@
 
 #include "base64.hpp"
 
-namespace libsystem {
-    std::vector<std::string> bootErrors;
-    DeviceMode deviceMode = NORMAL;
-}
+std::vector<std::string> bootErrors;
+libsystem::DeviceMode deviceMode = libsystem::NORMAL;
+auto systemConfig = libsystem::FileConfig(storage::Path("system/config.bfc"));
 
 class Restart final : public std::exception {
 public:
@@ -51,8 +50,10 @@ std::string hexToString(const uint32_t hex) {
 void libsystem::panic(const std::string &message, const bool restart) {
     setScreenOrientation(graphics::PORTRAIT);
 
+#ifdef ESP_PLATFORM
     const uint16_t screenWidth = graphics::getScreenWidth();
     const uint16_t screenHeight = graphics::getScreenHeight();
+#endif
 
     LGFX* lcd = graphics::getLCD();
 #ifdef ESP_PLATFORM
@@ -226,7 +227,7 @@ void libsystem::setDeviceMode(const DeviceMode mode) {
     switch (mode) {
         case NORMAL:
             StandbyMode::restorePower();
-            graphics::setBrightness(graphics::brightness);
+            graphics::setBrightness(graphics::getBrightness());
             break;
         case SLEEP:
             graphics::setBrightness(0x00);
@@ -237,6 +238,10 @@ void libsystem::setDeviceMode(const DeviceMode mode) {
 
 libsystem::DeviceMode libsystem::getDeviceMode() {
     return deviceMode;
+}
+
+libsystem::FileConfig libsystem::getSystemConfig() {
+    return systemConfig;
 }
 
 libsystem::exceptions::RuntimeError::RuntimeError(const std::string &message): runtime_error(message) {

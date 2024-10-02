@@ -471,7 +471,7 @@ void LuaFile::load()
                                    "getTextWidth", &LuaLabel::getTextWidth,
                                    "setVerticalAlignment", &LuaLabel::setVerticalAlignment,
                                    "setHorizontalAlignment", &LuaLabel::setHorizontalAlignment,
-                                   "setTextColor", &LuaLabel::setTextColor,
+                                   "setTextColor", sol::overload(&LuaLabel::setTextColor, &LuaLabel::setTextColorRGB),
                                    sol::base_classes, sol::bases<LuaWidget>());
 
         lua.new_usertype<LuaInput>("LuaInput",
@@ -733,6 +733,20 @@ void LuaFile::stop(std::vector<std::string> arg)
 
 void LuaFile::loop()
 {
+    // Process commands
+    while (!m_commandQueue.empty())
+    {
+        switch (m_commandQueue.front())
+        {
+        case QUIT:
+            // Quit lua app OUTSIDE of lua
+            AppManager::quitApp();
+            break;
+        }
+
+        m_commandQueue.pop();
+    }
+
     // lua_gui.update();   // add App Priority To Acces Gui
     lua_time.update();
 }

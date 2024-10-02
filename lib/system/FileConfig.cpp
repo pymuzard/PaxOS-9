@@ -10,14 +10,7 @@
 
 namespace libsystem
 {
-
-    FileConfig &FileConfig::getInstance()
-    {
-        static FileConfig instance; // Instanciation unique
-        return instance;
-    }
-
-    void FileConfig::load(const storage::Path &path)
+    FileConfig::FileConfig(const storage::Path &path)
     {
         m_path = path;
 
@@ -48,6 +41,8 @@ namespace libsystem
             closeFileStream();
         }
     }
+
+    FileConfig::~FileConfig() = default;
 
     void FileConfig::write()
     {

@@ -7,7 +7,7 @@
 #include <filestream.hpp>
 #include <path.hpp>
 #include <hardware.hpp>
-#include <threads.hpp>
+#include <queue>
 
 #include "lua_gui.hpp"
 #include "lua_hardware.hpp"
@@ -16,12 +16,18 @@
 #include "lua_gsm.hpp"
 #include "lua_json.hpp"
 
+namespace paxolua::lib
+{
+    class OldLibrary;
+}
 
-namespace AppManager {
+namespace AppManager
+{
     class App;
 }
 
-struct Permissions {
+struct Permissions
+{
     bool acces_gui = true;
     bool acces_files = true;
     bool acces_files_root = true;
@@ -32,7 +38,15 @@ struct Permissions {
     bool acces_gsm = true;
 };
 
-class LuaFile {
+/**
+ * @brief Lua environment management based of a file.
+ *
+ * @deprecated Please use "paxolua::LuaEnvironment".
+ */
+class LuaFile
+{
+    friend class paxolua::lib::OldLibrary;
+
 public:
     LuaFile(storage::Path filename, storage::Path manifest);
     ~LuaFile();
@@ -45,39 +59,60 @@ public:
 
     void loop();
 
-        sol::protected_function oncall; 
-        sol::protected_function onlowbattery;
-        sol::protected_function oncharging;
-        sol::protected_function onmessage;
-        sol::protected_function onmessageerror;
-    
-        void event_oncall() { if(oncall.valid()) oncall(); }
-        void event_onlowbattery() { if(onlowbattery.valid()) onlowbattery(); }
-        void event_oncharging() { if(oncharging.valid()) oncharging(); }
-        void event_onmessage() {
-            if(onmessage.valid()) {
-                sol::protected_function_result result = onmessage();
-                if (!result.valid()) {
-                    sol::error err = result;
-                    std::cout << "[LuaFile] onmessage event error: " << err.what() << std::endl;
-                } else {
-                    std::cout << "onmessage event activated" << std::endl;
-                }
-            }
-        }
+    sol::protected_function oncall;
+    sol::protected_function onlowbattery;
+    sol::protected_function oncharging;
+    sol::protected_function onmessage;
+    sol::protected_function onmessageerror;
 
-        void event_onmessageerror()
+    void event_oncall()
+    {
+        if (oncall.valid())
+            oncall();
+    }
+    void event_onlowbattery()
+    {
+        if (onlowbattery.valid())
+            onlowbattery();
+    }
+    void event_oncharging()
+    {
+        if (oncharging.valid())
+            oncharging();
+    }
+    void event_onmessage()
+    {
+        if (onmessage.valid())
         {
-            if(onmessageerror.valid()) {
-                sol::protected_function_result result = onmessageerror();
-                if (!result.valid()) {
-                    sol::error err = result;
-                    std::cout << "[LuaFile] onmessageerror event error: " << err.what() << std::endl;
-                } else {
-                    std::cout << "onmessageerror event activated" << std::endl;
-                }
+            sol::protected_function_result result = onmessage();
+            if (!result.valid())
+            {
+                sol::error err = result;
+                std::cout << "[LuaFile] onmessage event error: " << err.what() << std::endl;
+            }
+            else
+            {
+                std::cout << "onmessage event activated" << std::endl;
             }
         }
+    }
+
+    void event_onmessageerror()
+    {
+        if (onmessageerror.valid())
+        {
+            sol::protected_function_result result = onmessageerror();
+            if (!result.valid())
+            {
+                sol::error err = result;
+                std::cout << "[LuaFile] onmessageerror event error: " << err.what() << std::endl;
+            }
+            else
+            {
+                std::cout << "onmessageerror event activated" << std::endl;
+            }
+        }
+    }
 
     Permissions perms;
     storage::Path directory;
@@ -85,16 +120,26 @@ public:
     sol::state lua;
 
     storage::Path filename;
-    Window* current_root;
+    Window *current_root;
 
     EventHandler eventHandler;
     LuaHardware lua_hardware;
     LuaGui lua_gui;
     LuaStorage lua_storage;
     LuaTime lua_time;
-    //LuaNetwork lua_network;
+    // LuaNetwork lua_network;
 
-    AppManager::App* app; // using raw pointer, because this class will NEVER call the deleter
+    AppManager::App *app; // using raw pointer, because this class will NEVER call the deleter
+
+private:
+    LuaFile();
+
+    enum Command
+    {
+        QUIT
+    };
+
+    std::queue<Command> m_commandQueue;
 };
 
 #endif
