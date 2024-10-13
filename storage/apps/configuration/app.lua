@@ -118,8 +118,10 @@ end
 
 
 function connectWifi(SSID)
-    local passwd = gui.keyboard("connect ","passwd")
-    settings:connectWifi(SSID, passwd)
+    local passwd = gui.keyboard("connect "..SSID,"passwd")
+    if passwd ~= "passwd" then
+        settings.connectWifi(SSID, passwd)
+    end
 end
 
 
@@ -164,7 +166,7 @@ function initColorScreen()
 
 
 
-    
+
 
 end
 
