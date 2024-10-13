@@ -4,13 +4,21 @@
 
 #include "libapp.hpp"
 
-void paxolua::app::load(const sol::state &lua) {
-    auto paxo = lua["paxo"].get<sol::table>();
+namespace paxolua::lib
+{
+    void AppLibrary::load(LuaEnvironment *env)
+    {
+        libsystem::log("Loading AppLibrary");
 
-    // paxo.app
-    auto app = paxo["app"].get_or_create<sol::table>(sol::new_table());
+        sol::table paxo = env->getPaxoNamespace();
+        auto app = paxo["app"].get_or_create<sol::table>();
 
-    // app.set_function("quit", [&]() {
-    //     m_commandQueue.push(QUIT);
-    // });
+        app.set_function("quit", [&]()
+                         { 
+                        AppManager::quitApp();; });
+    }
+
+    void AppLibrary::update(LuaEnvironment *env)
+    {
+    }
 }

@@ -9,8 +9,13 @@
 #include <SOL2/sol.hpp>
 #include <color.hpp>
 
-namespace paxolua::lib {
-    void ColorLibrary::load(LuaEnvironment *env) {
+namespace paxolua::lib
+{
+    void ColorLibrary::load(LuaEnvironment *env)
+    {
+
+        libsystem::log("Loading ColorLibrary");
+
         sol::table paxo = env->getPaxoNamespace();
         auto color = paxo["color"].get_or_create<sol::table>();
 
@@ -41,20 +46,17 @@ namespace paxolua::lib {
         color.set("lightBlue", COLOR_LIGHT_BLUE);
         color.set("lightGrey", COLOR_LIGHT_GREY);
 
-        color.set_function("toColor", [&](const uint8_t r, const uint8_t g, const uint8_t b) -> color_t {
-           return graphics::packRGB565(r, g, b);
-        });
+        color.set_function("toColor", [&](const uint8_t r, const uint8_t g, const uint8_t b) -> color_t
+                           { return graphics::packRGB565(r, g, b); });
 
-        color.set_function("toRGB", [&](const color_t rgb) -> std::tuple<uint8_t, uint8_t, uint8_t    > {
+        color.set_function("toRGB", [&](const color_t rgb) -> std::tuple<uint8_t, uint8_t, uint8_t>
+                           {
             uint8_t r, g, b;
-
             graphics::unpackRGB565(rgb, &r, &g, &b);
-
-            return std::make_tuple(r, g, b);
-        });
+            return std::make_tuple(r, g, b); });
     }
 
-    void ColorLibrary::update(LuaEnvironment *env) {
-
+    void ColorLibrary::update(LuaEnvironment *env)
+    {
     }
 } // paxolua::lib

@@ -11,3 +11,4 @@
 ./storage/apps/calendrier/app.lua
 ./storage/apps/paxoluatest/app.lua
 ./storage/apps/oldluatest/app.lua
+./storage/apps/configuration/app.lua

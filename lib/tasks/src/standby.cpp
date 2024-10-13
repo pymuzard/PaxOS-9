@@ -27,7 +27,7 @@ namespace StandbyMode
 
     void trigger()
     {
-        if(enabled == true)
+        if (enabled == true)
             return;
         lastTrigger = millis();
 
@@ -38,7 +38,7 @@ namespace StandbyMode
     {
         lastPowerTrigger = millis();
 
-        if(powerMode == false/* && enabled == false*/)
+        if (powerMode == false /* && enabled == false*/)
         {
             restorePower();
         }
@@ -59,12 +59,12 @@ namespace StandbyMode
         if (!enabled && millis() - lastTrigger > sleepTime - 10000)
         {
             // Dim screen
-            graphics::setBrightness(graphics::getBrightness()/3 + 3, true);
+            graphics::setBrightness(graphics::getBrightness() / 3 + 3, true);
         }
 
         if (millis() - lastPowerTrigger > 5000)
         {
-            if(powerMode == true)
+            if (powerMode == true)
             {
                 savePower();
             }
@@ -76,17 +76,22 @@ namespace StandbyMode
         StandbyMode::sleepTime = sleepTime;
     }
 
+    uint64_t getSleepTime()
+    {
+        return StandbyMode::sleepTime;
+    }
+
     bool state()
     {
         return enabled;
     }
-    
+
     void enable()
     {
         enabled = true;
         lastTrigger = millis();
     }
-    
+
     void disable()
     {
         enabled = false;
@@ -95,24 +100,24 @@ namespace StandbyMode
 
     void savePower()
     {
-        #ifdef ESP_PLATFORM
+#ifdef ESP_PLATFORM
         Serial.end();
         setCpuFrequencyMhz(20);
         GSM::reInit();
         Serial.begin(115200);
         powerMode = false;
-        #endif
+#endif
     }
 
     void restorePower()
     {
-        #ifdef ESP_PLATFORM
+#ifdef ESP_PLATFORM
         Serial.end();
         setCpuFrequencyMhz(240);
         GSM::reInit();
         Serial.begin(115200);
         powerMode = true;
-        #endif
+#endif
     }
 
     void wait()
@@ -123,20 +128,20 @@ namespace StandbyMode
 
         uint64_t dt = millis() - timer;
 
-        if(dt < TICKS_MS)
+        if (dt < TICKS_MS)
         {
             uint64_t tw = TICKS_MS - dt;
 
-        #ifdef ESP_PLATFORM
+#ifdef ESP_PLATFORM
             vTaskDelay(pdMS_TO_TICKS(tw));
-        #else
+#else
             SDL_Delay(tw);
-        #endif
+#endif
         }
 
-        #ifdef ESP_PLATFORM
-        //std::cout << "CPU USAGE: " << (float) (100*(dt/TICKS_MS)) << "%" << std::endl;
-        #endif
+#ifdef ESP_PLATFORM
+// std::cout << "CPU USAGE: " << (float) (100*(dt/TICKS_MS)) << "%" << std::endl;
+#endif
 
         timer = millis();
     }

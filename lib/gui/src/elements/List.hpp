@@ -7,7 +7,7 @@ namespace gui::elements
 {
     /**
      * @brief Can contain a list of elements and is scrollable and is memory efficient
-    **/
+     **/
     class VerticalList final : public ElementBase
     {
     public:
@@ -17,7 +17,7 @@ namespace gui::elements
         void render() override;
         void postRender();
 
-        void add(ElementBase* widget);
+        void add(ElementBase *widget);
         void setIndex(int index);
 
         void setSpaceLine(uint16_t y);
@@ -37,11 +37,10 @@ namespace gui::elements
         void select(int index);
         void setSelectionColor(color_t color);
         void setAutoSelect(bool autoSelect);
-        void setIsSelected(bool autoSelect);
+        void setIsSelected(bool selected);
         bool getIsSelected();
 
-        //virtual void onSelect() {}
-
+        // virtual void onSelect() {}
 
     private:
         int16_t m_focusedIndex = 0;
@@ -52,7 +51,6 @@ namespace gui::elements
         color_t m_selectionColor;
         bool m_autoSelect;
         bool isSelected = false;
-
     };
 
     class HorizontalList final : public ElementBase
@@ -63,7 +61,7 @@ namespace gui::elements
 
         void render() override;
 
-        void add(ElementBase* widget);
+        void add(ElementBase *widget);
 
         void setSpaceLine(uint16_t y);
 
@@ -72,4 +70,4 @@ namespace gui::elements
     };
 } // gui::elements
 
-#endif //LIST_HPP
+#endif // LIST_HPP

@@ -6,15 +6,16 @@
 namespace StandbyMode
 {
     void trigger();
-    void triggerPower();    // when a process needs power
+    void triggerPower(); // when a process needs power
     void update();
 
     void wait();
 
     void setSleepTime(uint64_t sleepTime);
+    uint64_t getSleepTime();
 
     bool state();
-    bool expired();    // check if it's time to sleep
+    bool expired(); // check if it's time to sleep
     void reset();
 
     void enable();

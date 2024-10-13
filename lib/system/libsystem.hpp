@@ -20,7 +20,7 @@
 #define OS_VERSION_BUILD "0"
 #define OS_VERSION_CODENAME "Red Panic"
 
-#define OS_VERSION                                                                                                     \
+#define OS_VERSION \
     OS_VERSION_MAJOR "." OS_VERSION_MINOR "." OS_VERSION_PATCH "-" OS_VERSION_BUILD " (" OS_VERSION_CODENAME ")"
 
 /**
@@ -28,7 +28,8 @@
  *
  * libsystem contains useful functions and classes to manage the system.
  */
-namespace libsystem {
+namespace libsystem
+{
     /**
      * @brief Delay the current thread.
      *
@@ -101,7 +102,11 @@ namespace libsystem {
     /**
      * @brief Different device state, unique.
      */
-    enum DeviceMode { NORMAL, SLEEP };
+    enum DeviceMode
+    {
+        NORMAL,
+        SLEEP
+    };
 
     /**
      * @brief Set the device mode.
@@ -134,13 +139,15 @@ namespace libsystem {
      *
      * Please use these exception instead of standard ones.
      */
-    namespace exceptions {
+    namespace exceptions
+    {
         /**
          * @brief Wrapper for std::runtime_error.
          *
          * Standard exception, but calls an OS panic.
          */
-        class RuntimeError final : public std::runtime_error {
+        class RuntimeError final : public std::runtime_error
+        {
         public:
             /**
              * @brief Throw a new std::runtime_error.
@@ -162,7 +169,8 @@ namespace libsystem {
          *
          * Standard exception, but calls an OS panic.
          */
-        class OutOfRange final : public std::out_of_range {
+        class OutOfRange final : public std::out_of_range
+        {
         public:
             /**
              * @brief Throw a new std::out_of_range.
@@ -184,7 +192,8 @@ namespace libsystem {
          *
          * Standard exception, but calls an OS panic.
          */
-        class InvalidArgument final : public std::invalid_argument {
+        class InvalidArgument final : public std::invalid_argument
+        {
         public:
             /**
              * @brief Throw a new std::invalid_argument.
@@ -201,6 +210,82 @@ namespace libsystem {
             explicit InvalidArgument(const char *message);
         };
     } // namespace exceptions
+
+    /**
+     * @brief inner class to managa ethe setting of the paxo
+     *
+     */
+    namespace paxoConfig
+    {
+        /**
+         * @brief Get the Brightness from config file
+         *  if settings from config file is not found, returns 0
+         * @return uint8_t
+         */
+        uint8_t getBrightness();
+
+        /**
+         * @brief Set the Brightness object
+         * if the save settings is specified, save it to the config file
+         * @param brightness
+         * @param save
+         */
+        void setBrightness(int16_t brightness, bool save);
+
+        /**
+         * @brief Set the StandBy Sleep in milliseconds
+         * if the save parameter is specified, save it to the config file
+         * @param millis
+         * @param save
+         */
+        void setStandBySleepTime(uint64_t millis, bool save);
+
+        /**
+         * @brief Get the StandBy Sleep Time from the config file
+         *  if settings from config file is not found, returns 0
+         *
+         * @return uint64_t
+         */
+        uint64_t getStandBySleepTime();
+
+        /**
+         * @brief get the OS version & name
+         *
+         * @return std::string
+         */
+        std::string getOSVersion();
+
+        /**
+         * @brief Set the Wifi Credentials
+         *
+         * @param SSID
+         * @param user
+         * @param passwd
+         */
+        void setWifiCredentials(std::string SSID, std::string user, std::string passwd);
+
+        /**
+         * @brief Get the list of Available Wifi SSID
+         *
+         * @return std::vector<std::string>
+         */
+        std::vector<std::string> getAvailableWifiSSID();
+
+        /**
+         * @brief Get the Connected Wifi
+         *
+         * @return std::string
+         */
+        std::string getConnectedWifi();
+
+        /**
+         * @brief connect to the wifi SSI, using
+         *
+         * @return connection success
+         */
+        bool connectWifi(std::string SSID, std::string passwd);
+    }
+
 } // namespace libsystem
 
 #endif // LIBSYSTEM_HPP

@@ -115,6 +115,7 @@ namespace gui::elements
          */
         void slide();
 
+
     private:
         uint16_t m_minValue;
         uint16_t m_maxValue;

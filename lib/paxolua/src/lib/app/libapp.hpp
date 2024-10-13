@@ -5,10 +5,20 @@
 #ifndef APP_HPP
 #define APP_HPP
 
+#include <libsystem.hpp>
+#include <LuaEnvironment.hpp>
 #include <SOL2/sol.hpp>
+#include "app.hpp"
 
-namespace paxolua::app {
-    void load(const sol::state &lua);
-}
+namespace paxolua::lib
+{
+    class AppLibrary final : public LuaLibrary
+    {
+    protected:
+        void load(LuaEnvironment *env) override;
 
-#endif //APP_HPP
+        void update(LuaEnvironment *env) override;
+    };
+} // paxolua::lib
+
+#endif // APP_HPP
