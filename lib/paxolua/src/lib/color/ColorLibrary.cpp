@@ -46,6 +46,8 @@ namespace paxolua::lib
         color.set("lightBlue", COLOR_LIGHT_BLUE);
         color.set("lightGrey", COLOR_LIGHT_GREY);
 
+        color.set("greenPaxo", graphics::packRGB565(97, 183, 157));
+
         color.set_function("toColor", [&](const uint8_t r, const uint8_t g, const uint8_t b) -> color_t
                            { return graphics::packRGB565(r, g, b); });
 

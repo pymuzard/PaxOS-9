@@ -16,6 +16,12 @@ function paxo.load()
 end
 
 
+
+
+-- -----------------------------------
+--  GESTION ECRAN PRINCIPAL
+-- -----------------------------------
+
 function initMainScreen()
 
     local win = manageWindow()
@@ -91,7 +97,6 @@ function initMainScreen()
         lblWifiSSID:setText(k)
         lblWifiSSID:onClick(function() connectWifi(k) end )
     end
-    print(8)
 
     for i,k in ipairs(lstSSID) do
         if k == connectedWifi then 
@@ -99,9 +104,6 @@ function initMainScreen()
             break
         end
     end
-
-
-    print(9)
 
     --Bouton Sauvegarder
     lblSauvergarder = gui.label.new(win, 50, 420, 200, 30)
@@ -116,7 +118,7 @@ end
 
 
 function connectWifi(SSID)
-    local passwd = gui:keyboard("connect "..SSID,"passwd")
+    local passwd = gui.keyboard("connect ","passwd")
     settings:connectWifi(SSID, passwd)
 end
 
@@ -148,6 +150,24 @@ function saveChanges()
 
     paxo.app.quit()
 end
+
+
+
+-- -----------------------------------
+--  GESTION ECRAN COULEURQ
+-- -----------------------------------
+
+
+function initColorScreen()
+
+    local winColor = manageWindow()
+
+
+
+    
+
+end
+
 
 
 

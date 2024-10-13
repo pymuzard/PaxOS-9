@@ -10,6 +10,8 @@
 #include <SOL2/sol.hpp>
 #include <lua_box.hpp>
 #include <lua_gui.hpp>
+#include <graphics.hpp>
+#include <threads.hpp>
 
 namespace paxolua::lib
 {
@@ -141,7 +143,7 @@ namespace paxolua::lib
                                     sol::base_classes, sol::bases<LuaWidget>());
 
         // LuaGui::keyboard(const std::string &placeholder, const std::string &defaultText)
-        gui.set_function("keyboard", &LuaGui::keyboard);
+        gui.set_function("keyboard", &GUILibrary::keyboard);
 
         // paxo.gui.setWindow()
         gui.set_function("setWindow", [&](LuaWindow *window)
@@ -155,4 +157,26 @@ namespace paxolua::lib
             m_currentWindow->update();
         }
     }
+
+    std::string GUILibrary::keyboard(const std::string &placeholder, const std::string &defaultText)
+    {
+        graphics::setScreenOrientation(graphics::LANDSCAPE);
+
+        auto key = new Keyboard(defaultText);
+        key->setPlaceholder(placeholder);
+
+        while (!hardware::getHomeButton() && !key->quitting())
+        {
+            eventHandlerApp.update();
+            key->updateAll();
+        }
+
+        graphics::setScreenOrientation(graphics::PORTRAIT);
+
+        std::string o = key->getText();
+
+        delete key;
+        return o;
+    }
+
 } // paxolua::lib

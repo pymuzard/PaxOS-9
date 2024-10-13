@@ -10,7 +10,7 @@
 
 namespace paxolua::system
 {
-    void load(const sol::state &lua);
+    void load(sol::state &lua);
 
     namespace config
     {
@@ -27,7 +27,6 @@ namespace paxolua::system
 
         // TODO: Make "write()" auto.
         void write();
-
     }
 
 }

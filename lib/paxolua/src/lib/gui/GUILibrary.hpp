@@ -9,8 +9,10 @@
 
 #include <lua_window.hpp>
 
-namespace paxolua::lib {
-    class GUILibrary final : public LuaLibrary {
+namespace paxolua::lib
+{
+    class GUILibrary final : public LuaLibrary
+    {
     public:
         GUILibrary();
 
@@ -19,9 +21,11 @@ namespace paxolua::lib {
 
         void update(LuaEnvironment *env) override;
 
+        static std::string keyboard(const std::string &placeholder, const std::string &defaultText);
+
     private:
         LuaWindow *m_currentWindow;
     };
 } // paxolua::lib
 
-#endif //GUILIBRARY_HPP
+#endif // GUILIBRARY_HPP

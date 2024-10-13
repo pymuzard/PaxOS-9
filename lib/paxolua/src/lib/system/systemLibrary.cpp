@@ -5,7 +5,7 @@
 #include "systemLibrary.hpp"
 #include <libsystem.hpp>
 
-void paxolua::system::load(const sol::state &lua)
+void paxolua::system::load(sol::state &lua)
 {
     auto paxo = lua["paxo"].get<sol::table>();
 
@@ -46,7 +46,8 @@ void paxolua::system::load(const sol::state &lua)
                                 {
         std::vector<std::string> lstSSID = libsystem::paxoConfig::getAvailableWifiSSID();
 
-        sol::table result = lua.create_table(lua, 0,0);
+//        sol::table result = lua.create_table(lua, 0,0);
+        sol::table result = lua.create_table();
         for (const auto elem : lstSSID) {
             result.add(elem);
         }
