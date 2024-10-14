@@ -305,6 +305,5 @@ function manageWindow()
     end
     
     oldWin = win
-
     return win
 end

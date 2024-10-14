@@ -127,7 +127,7 @@ namespace paxolua::lib
         selectionFocus.set("center", VerticalList::SelectionFocus::CENTER);
 
         // paxo.gui.slider
-        gui.new_usertype<LuaSlider>("slider", sol::constructors<LuaSlider(LuaWidget *, int, int, int, int, int, int, int)>(),
+        gui.new_usertype<LuaSlider>("slider", sol::constructors<LuaLabel(LuaWidget *, int, int, int, int, int, int, int)>(),
                                     "setValue", &LuaSlider::setValue,
                                     "displayValue", &LuaSlider::displayValue,
                                     "setMinValue", &LuaSlider::setMinValue,
@@ -142,7 +142,6 @@ namespace paxolua::lib
                                     "onChange", &LuaSlider::onChange,
                                     sol::base_classes, sol::bases<LuaWidget>());
 
-        ///////////////
         gui.new_usertype<LuaSwitch>("switch", sol::constructors<LuaSwitch(LuaWidget *, int, int)>(),
                                     "setState", &LuaSwitch::setState,
                                     "getState", &LuaSwitch::getState,
@@ -158,11 +157,6 @@ namespace paxolua::lib
                                       "getState", &LuaCheckbox::getState,
                                       sol::base_classes, sol::bases<LuaWidget>());
 
-        ///////////////
-
-        // paxo.gui.keyboard()
-        gui.set_function("keyboard", &GUILibrary::keyboard);
-
         // paxo.gui.del()
         gui.set_function("del", [&](LuaWidget *widget)
                          {
@@ -177,6 +171,9 @@ namespace paxolua::lib
         widget = nullptr; 
                     std::cout << "end del" << std::endl; });
 
+        gui.set_function("keyboard", [&](const std::string &placeholder, const std::string &defaultText, sol::function callback)
+            {this->keyboard(placeholder, defaultText, callback);});
+
         // paxo.gui.setWindow()
         gui.set_function("setWindow", [&](LuaWindow *window)
                          { m_currentWindow = window; });
@@ -184,31 +181,47 @@ namespace paxolua::lib
 
     void GUILibrary::update(LuaEnvironment *env)
     {
-        if (m_currentWindow != nullptr)
+        if(m_currentWindow != nullptr && this->graphicalMode == NO_GRAPHICS)
+        {
+            this->graphicalMode = GRAPHICS;
+        }
+
+        if (this->graphicalMode == GRAPHICS && m_currentWindow != nullptr)
         {
             m_currentWindow->update();
         }
-    }
-
-    std::string GUILibrary::keyboard(const std::string &placeholder, const std::string &defaultText)
-    {
-        graphics::setScreenOrientation(graphics::LANDSCAPE);
-
-        auto key = new Keyboard(defaultText);
-        key->setPlaceholder(placeholder);
-
-        while (!hardware::getHomeButton() && !key->quitting())
+        else if (this->graphicalMode == KEYBOARD)
         {
-            eventHandlerApp.update();
-            key->updateAll();
+            m_keyboard.m_keyboardWindow->updateAll();
+
+            if(m_keyboard.m_keyboardWindow->quitting())
+            {
+                try
+                {
+                    m_keyboard.callback(m_keyboard.m_keyboardWindow->getText());
+                }
+                catch(const std::exception& e)
+                {
+                    std::cerr << "[PaxoLua] Error when calling callback for 'paxo.gui.keyboard()': " << e.what() << std::endl;
+                }
+                this->graphicalMode = m_keyboard.graphicalModeBackup;
+                graphics::setScreenOrientation(graphics::PORTRAIT);
+                delete m_keyboard.m_keyboardWindow;
+                m_keyboard.m_keyboardWindow = nullptr;
+            }
         }
-
-        graphics::setScreenOrientation(graphics::PORTRAIT);
-
-        std::string o = key->getText();
-
-        delete key;
-        return o;
     }
 
+    void GUILibrary::keyboard(const std::string &placeholder, const std::string &defaultText, sol::function callback)
+    {
+        if(m_keyboard.m_keyboardWindow == nullptr)
+        {
+            m_keyboard.m_keyboardWindow = new Keyboard(defaultText);
+            m_keyboard.m_keyboardWindow->setPlaceholder(placeholder);
+            m_keyboard.callback = callback;
+            m_keyboard.graphicalModeBackup = this->graphicalMode;
+            this->graphicalMode = KEYBOARD;
+            graphics::setScreenOrientation(graphics::LANDSCAPE);
+        }
+    }
 } // paxolua::lib

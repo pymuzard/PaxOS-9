@@ -46,7 +46,6 @@ void paxolua::system::load(sol::state &lua)
                                 {
         std::vector<std::string> lstSSID = libsystem::paxoConfig::getAvailableWifiSSID();
 
-//        sol::table result = lua.create_table(lua, 0,0);
         sol::table result = lua.create_table();
         for (const auto elem : lstSSID) {
             result.add(elem);

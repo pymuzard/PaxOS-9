@@ -33,6 +33,7 @@ namespace paxolua::lib
         color.set("blue", COLOR_BLUE);
 
         color.set("yellow", COLOR_YELLOW);
+        color.set("grey", COLOR_GREY);
         color.set("magenta", COLOR_MAGENTA);
         color.set("cyan", COLOR_CYAN);
         color.set("violet", COLOR_VIOLET);

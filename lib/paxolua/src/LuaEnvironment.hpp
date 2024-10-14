@@ -9,16 +9,14 @@
 #include <path.hpp>
 #include <SOL2/sol.hpp>
 
-namespace paxolua
-{
-    class LuaEnvironment
-    {
+namespace paxolua {
+    class LuaEnvironment {
     public:
         explicit LuaEnvironment(const storage::Path &workingDirectory);
         ~LuaEnvironment();
 
         [[nodiscard]] storage::Path getWorkingDirectory() const;
-        sol::state &getLuaState();
+        sol::state & getLuaState();
 
         sol::table getPaxoNamespace();
 
@@ -62,11 +60,10 @@ namespace paxolua
         std::vector<std::shared_ptr<LuaLibrary>> m_libraries;
     };
 
-    namespace helper
-    {
+    namespace helper {
         void applyManifest(LuaEnvironment *env, const storage::Path &manifest);
         storage::Path convertPath(const LuaEnvironment *env, const storage::Path &path);
     }
 } // paxolua
 
-#endif // LUAENVIRONMENT_HPP
+#endif //LUAENVIRONMENT_HPP
