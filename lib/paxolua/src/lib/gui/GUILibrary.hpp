@@ -16,12 +16,12 @@ namespace paxolua::lib
     public:
         GUILibrary();
 
+        static std::string keyboard(const std::string &placeholder, const std::string &defaultText);
+        // void del(LuaWidget *widget);
+
     protected:
         void load(LuaEnvironment *env) override;
-
         void update(LuaEnvironment *env) override;
-
-        static std::string keyboard(const std::string &placeholder, const std::string &defaultText);
 
     private:
         LuaWindow *m_currentWindow;

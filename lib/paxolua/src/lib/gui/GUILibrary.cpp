@@ -127,7 +127,7 @@ namespace paxolua::lib
         selectionFocus.set("center", VerticalList::SelectionFocus::CENTER);
 
         // paxo.gui.slider
-        gui.new_usertype<LuaSlider>("slider", sol::constructors<LuaLabel(LuaWidget *, int, int, int, int, int, int, int)>(),
+        gui.new_usertype<LuaSlider>("slider", sol::constructors<LuaSlider(LuaWidget *, int, int, int, int, int, int, int)>(),
                                     "setValue", &LuaSlider::setValue,
                                     "displayValue", &LuaSlider::displayValue,
                                     "setMinValue", &LuaSlider::setMinValue,
@@ -142,8 +142,40 @@ namespace paxolua::lib
                                     "onChange", &LuaSlider::onChange,
                                     sol::base_classes, sol::bases<LuaWidget>());
 
-        // LuaGui::keyboard(const std::string &placeholder, const std::string &defaultText)
+        ///////////////
+        gui.new_usertype<LuaSwitch>("switch", sol::constructors<LuaSwitch(LuaWidget *, int, int)>(),
+                                    "setState", &LuaSwitch::setState,
+                                    "getState", &LuaSwitch::getState,
+                                    sol::base_classes, sol::bases<LuaWidget>());
+
+        gui.new_usertype<LuaRadio>("radio", sol::constructors<LuaRadio(LuaWidget *, int, int)>(),
+                                   "setState", &LuaRadio::setState,
+                                   "getState", &LuaRadio::getState,
+                                   sol::base_classes, sol::bases<LuaWidget>());
+
+        gui.new_usertype<LuaCheckbox>("checkbox", sol::constructors<LuaRadio(LuaWidget *, int, int)>(),
+                                      "setState", &LuaCheckbox::setState,
+                                      "getState", &LuaCheckbox::getState,
+                                      sol::base_classes, sol::bases<LuaWidget>());
+
+        ///////////////
+
+        // paxo.gui.keyboard()
         gui.set_function("keyboard", &GUILibrary::keyboard);
+
+        // paxo.gui.del()
+        gui.set_function("del", [&](LuaWidget *widget)
+                         {
+
+            std::cout << "delete widget " << widget << std::endl;
+        delete widget;
+            std::cout << "widget deleted " <<  std::endl;
+        if (m_currentWindow == widget){
+            std::cout << "widget to be deleted is current Window !" << std::endl;
+            m_currentWindow = nullptr;
+        }
+        widget = nullptr; 
+                    std::cout << "end del" << std::endl; });
 
         // paxo.gui.setWindow()
         gui.set_function("setWindow", [&](LuaWindow *window)

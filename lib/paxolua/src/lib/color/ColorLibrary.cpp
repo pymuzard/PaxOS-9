@@ -33,7 +33,6 @@ namespace paxolua::lib
         color.set("blue", COLOR_BLUE);
 
         color.set("yellow", COLOR_YELLOW);
-        color.set("grey", COLOR_GREY);
         color.set("magenta", COLOR_MAGENTA);
         color.set("cyan", COLOR_CYAN);
         color.set("violet", COLOR_VIOLET);
@@ -53,9 +52,9 @@ namespace paxolua::lib
 
         color.set_function("toRGB", [&](const color_t rgb) -> std::tuple<uint8_t, uint8_t, uint8_t>
                            {
-            uint8_t r, g, b;
-            graphics::unpackRGB565(rgb, &r, &g, &b);
-            return std::make_tuple(r, g, b); });
+                               uint8_t r, g, b;
+                               graphics::unpackRGB565(rgb, &r, &g, &b);
+                               return std::make_tuple(r, g, b); });
     }
 
     void ColorLibrary::update(LuaEnvironment *env)

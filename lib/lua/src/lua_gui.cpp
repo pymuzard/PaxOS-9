@@ -107,7 +107,7 @@ LuaHorizontalList *LuaGui::horizontalList(LuaWidget *parent, int x, int y, int w
 
 LuaSwitch *LuaGui::switchb(LuaWidget *parent, int x, int y)
 {
-    LuaSwitch *w = new LuaSwitch(parent, x, y, this);
+    LuaSwitch *w = new LuaSwitch(parent, x, y);
     widgets.push_back(w);
     w->gui = this;
     return w;

@@ -5,14 +5,14 @@
 
 class LuaSwitch : public LuaWidget
 {
-    public:
-    LuaSwitch(LuaWidget* parent, int x, int y, LuaGui* gui);
-    
-    void setState(bool state){ widget->setState(state); }
-    bool getState(){ return widget->getState(); }
-    void onChange(sol::protected_function func){ onChangeFunc = func; }
+public:
+    LuaSwitch(LuaWidget *parent, int x, int y);
 
-    Switch* widget = nullptr;
+    void setState(bool state) { widget->setState(state); }
+    bool getState() { return widget->getState(); }
+    void onChange(sol::protected_function func) { onChangeFunc = func; }
+
+    Switch *widget = nullptr;
     sol::protected_function onChangeFunc;
 };
 
