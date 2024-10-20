@@ -6,6 +6,8 @@ local oldWin
 local slider, lstSleepTime
 
 local groupRadio
+local radioText,radioBackground, radioBorder
+local textColor, backgroundColor, borderColor
 local sliderR, sliderG, sliderB
 
 
@@ -15,7 +17,6 @@ function paxo.update()
 end
 
 function paxo.load()
-
     initMainScreen()
 end
 
@@ -115,10 +116,21 @@ function initMainScreen()
 
     local lblColor = gui.label.new(win, 20, 350, 100, 20)
     lblColor:setText("Couleurs")
-    lblColor:onClick(initColorScreen)
 
+    local lblColorTest = gui.label.new(win, 150, 350, 100, 40)
+    lblColorTest:setText("Test")
+    lblColorTest:onClick(initColorScreen)
 
+    local colorBackground = settings:getBackgroundColor()
+    local colorBorder = settings:getBorderColor()
+    local colorText = settings:getTextColor()
 
+    lblColorTest:setBackgroundColor(colorBackground)
+    lblColorTest:setBorderColor(colorBorder)
+    lblColorTest:setBorderSize(1)
+    lblColorTest:setTextColor(colorText)
+    lblColorTest:setVerticalAlignment(gui.alignment.center)
+    lblColorTest:setHorizontalAlignment(gui.alignment.center)
 
 
     --Bouton Sauvegarder
@@ -181,20 +193,54 @@ function initColorScreen()
 
     local winColor = manageWindow()
 
+    local btnBack = gui.image.new(winColor, "/apps/configuration/back.png",10, 20, 20, 20, color.white)
+    btnBack:onClick(initMainScreen)
 
-    local lblTitre = gui.label.new(winColor, 20, 20, 100, 20)
-    local title = gui.label.new(winColor, 20, 20, 280, 40)
+    local title = gui.label.new(winColor, 40, 20, 280, 40)
     title:setText("Couleurs")
     title:setTextColor(97, 183, 157)
     title:setFontSize(30)
 
+    local topRadio = 80
 
+    -- Gestion des boutons radios
+    radioText = gui.radio.new(winColor, 20, topRadio)
+    local lblRadioText = gui.label.new(winColor, 45, topRadio, 50, 20)
+    lblRadioText:setText("Texte")
 
+    radioBackground = gui.radio.new(winColor, 100, topRadio)
+    local lblRadioBackground = gui.label.new(winColor, 125, topRadio, 90, 20)
+    lblRadioBackground:setText("Background")
 
+    radioBorder = gui.radio.new(winColor, 220, topRadio)
+    local lblRadioBorder = gui.label.new(winColor, 245, topRadio, 50, 20)
+    lblRadioBorder:setText("Border")
+
+    groupRadio = {radioText,radioBackground, radioBorder }
+    radioText:onClick(function () selectRadio(groupRadio, radioText) end)
+    radioBackground:onClick(function () selectRadio(groupRadio, radioBackground) end)
+    radioBorder:onClick(function () selectRadio(groupRadio, radioBorder) end)
+
+    -- radioText:setState(true)
+
+    -- Gestin grille de couleurs
     local colors = {color.success, color.warning, color.error, color.white, color.black, color.red, color.green, color.blue, color.yellow, color.grey, color.magenta, color.cyan, color.violet, color.orange, color.pink, color.lightOrange, color.lightGreen, color.lightBlue, color.lightGrey, color.greenPaxo }
 
     -- Label Test Couleurs
-    lblTestCouleur = gui.label.new(winColor, 250, 400, 50, 50)
+    lblTestCouleur = gui.label.new(winColor, 250, 370, 50, 60)
+    lblTestCouleur:setText("Test")
+    lblTestCouleur:setBorderSize(1)
+    lblTestCouleur:setHorizontalAlignment(gui.alignment.center)
+    lblTestCouleur:setVerticalAlignment(gui.alignment.center)
+
+    textColor = settings:getTextColor()
+    backgroundColor = settings:getBackgroundColor()
+    borderColor = settings:getBorderColor()
+
+    lblTestCouleur:setTextColor(textColor)
+    lblTestCouleur:setBackgroundColor(backgroundColor)
+    lblTestCouleur:setBorderColor(borderColor)
+
 
     local width = 300
     local height = 200
@@ -202,7 +248,7 @@ function initColorScreen()
     local gridCol = 5
 
 
-    local grille = gui.canvas.new(winColor, 10, 70, width, height)
+    local grille = gui.canvas.new(winColor, 10, 140, width, height)
     grille:onTouch(
         function (coord)
             local x = int(coord.x / (width/gridCol))
@@ -212,6 +258,7 @@ function initColorScreen()
             if y*gridCol+x <= #colors then
                 selectedColor = colors[y*gridCol+x +1]
             end
+            print("onTouch color = "..tostring(selectedColor))
             setPredefinedColor(selectedColor)
         end
     )
@@ -229,54 +276,59 @@ function initColorScreen()
         end
     end
 
-
-    local radioText = gui.radio.new(winColor, 20, 320)
-    local lblRadioText = gui.label.new(winColor, 45, 320, 50, 20)
-    lblRadioText:setText("Texte")
-
-    local radioBackground = gui.radio.new(winColor, 100, 320)
-    local lblRadioBackground = gui.label.new(winColor, 125, 320, 90, 20)
-    lblRadioBackground:setText("Background")
-
-    local radioBorder = gui.radio.new(winColor, 220, 320)
-    local lblRadioBorder = gui.label.new(winColor, 245, 320, 50, 20)
-    lblRadioBorder:setText("Border")
-
-    groupRadio = {radioText,radioBackground, radioBorder }
-    radioText:onClick(function () selectRadio(groupRadio, radioText) end)
-    radioBackground:onClick(function () selectRadio(groupRadio, radioBackground) end)
-    radioBorder:onClick(function () selectRadio(groupRadio, radioBorder) end)
-
-
-
     -- slider Rouge
     sliderR = gui.slider.new(winColor, 20, 370, 150, 20, 0, 255, 100)
     sliderR:setValueColor(color.red)
-    sliderR:onChange(function() 
-        lblTestCouleur:setBackgroundColor(color.toColor(sliderR:getValue(),sliderG:getValue(),sliderB:getValue() ))
-    end)
+    sliderR:onChange(setRGBColor)
 
     -- slider Green
     sliderG = gui.slider.new(winColor, 20, 400, 150, 20, 0, 255, 100)
     sliderG:setValueColor(color.green)
-    sliderG:onChange(function() 
-        lblTestCouleur:setBackgroundColor(color.toColor(sliderR:getValue(),sliderG:getValue(),sliderB:getValue() ))
-    end)
+    sliderG:onChange(setRGBColor)
 
     -- Slider Blue
     sliderB = gui.slider.new(winColor, 20, 430, 150, 20, 0, 255, 100)
     sliderB:setValueColor(color.blue)
-    sliderB:onChange(function() 
-        lblTestCouleur:setBackgroundColor(color.toColor(sliderR:getValue(),sliderG:getValue(),sliderB:getValue() ))
-    end)
+    sliderB:onChange(setRGBColor)
 
+    selectRadio(groupRadio, radioText)
 
 end
 
+function setRGBColor()
+
+    local couleur =color.toColor(sliderR:getValue(),sliderG:getValue(),sliderB:getValue() )
+    if radioText:getState() then 
+        textColor = couleur
+        lblTestCouleur:setTextColor(textColor)
+    elseif radioBackground:getState() then
+        backgroundColor = couleur
+        lblTestCouleur:setBackgroundColor(backgroundColor)
+    elseif radioBorder:getState() then
+        borderColor = couleur
+        lblTestCouleur:setBorderColor(borderColor)
+    else
+        return
+    end
+
+end
 
 function setPredefinedColor(col)
+    -- print("setPredefinedColor")
 
-    lblTestCouleur:setBackgroundColor(col)
+    if radioText:getState() then 
+        textColor = col
+        lblTestCouleur:setTextColor(textColor)
+    elseif radioBackground:getState() then
+        backgroundColor = col
+        lblTestCouleur:setBackgroundColor(backgroundColor)
+    elseif radioBorder:getState() then
+        borderColor = col
+        lblTestCouleur:setBorderColor(borderColor)
+    else
+        return
+    end
+        
     local selectedColor = table.pack(color.toRGB(col))
     if selectedColor.n ==3 then
         sliderR:setValue(selectedColor[1])
@@ -286,11 +338,45 @@ function setPredefinedColor(col)
 
 end
 
--- Manage a group of radio
+
+
+
+function saveColor()
+
+    settings:setBackgroundColor(backgroundColor, true)
+    settings:setTextColor(textColor, true)
+    settings:setBorderColor(borderColor, true)
+
+    initMainScreen()
+
+end
+
+
+
+-- select the radio button, and unselect the other ones
+-- adjust the sliders values based on the rigth color
 function selectRadio(groupRadio, radio)
     for i,r in ipairs(groupRadio) do
-        r:setState(r == radio)
+        r:setState(r == radio)        
     end
+    
+    local selectedColor
+    if radio == radioBackground then
+        selectedColor = table.pack(color.toRGB(backgroundColor))
+    elseif radio == radioBorder then
+        selectedColor = table.pack(color.toRGB(borderColor))
+    elseif radio == radioText then
+        selectedColor = table.pack(color.toRGB(textColor))
+    else
+        return
+    end
+    if selectedColor.n ==3 then
+        sliderR:setValue(selectedColor[1])
+        sliderG:setValue(selectedColor[2])
+        sliderB:setValue(selectedColor[3])
+    end
+
+
 end
 
 
@@ -300,7 +386,7 @@ function manageWindow()
     gui.setWindow(win)
 
     if oldWin ~= nil then 
-        gui.del(oldWin) 
+        -- gui.del(oldWin) 
         oldWin  =nil 
     end
     

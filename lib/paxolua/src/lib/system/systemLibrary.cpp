@@ -35,11 +35,14 @@ void paxolua::system::load(sol::state &lua)
 
     // paxo.system.settings
     auto systemSettings = system["settings"].get_or_create<sol::table>(sol::new_table());
+
     systemSettings.set_function("getBrightness", &libsystem::paxoConfig::getBrightness);
     systemSettings.set_function("setBrightness", &libsystem::paxoConfig::setBrightness);
     systemSettings.set_function("setStandBySleepTime", &libsystem::paxoConfig::setStandBySleepTime);
     systemSettings.set_function("getStandBySleepTime", &libsystem::paxoConfig::getStandBySleepTime);
+
     systemSettings.set_function("getOSVersion", &libsystem::paxoConfig::getOSVersion);
+
     systemSettings.set_function("getConnectedWifi", &libsystem::paxoConfig::getConnectedWifi);
     systemSettings.set_function("connectWifi", &libsystem::paxoConfig::connectWifi);
     systemSettings.set_function("getAvailableWifiSSID", [&]() -> sol::table
@@ -51,6 +54,13 @@ void paxolua::system::load(sol::state &lua)
             result.add(elem);
         }
         return result; });
+
+    systemSettings.set_function("getBackgroundColor", &libsystem::paxoConfig::getBackgroundColor);
+    systemSettings.set_function("getTextColor", &libsystem::paxoConfig::getTextColor);
+    systemSettings.set_function("getBorderColor", &libsystem::paxoConfig::getBorderColor);
+    systemSettings.set_function("setBackgroundColor", &libsystem::paxoConfig::setBackgroundColor);
+    systemSettings.set_function("setTextColor", &libsystem::paxoConfig::setTextColor);
+    systemSettings.set_function("setBorderColor", &libsystem::paxoConfig::setBorderColor);
 }
 
 bool paxolua::system::config::has(const std::string &key)

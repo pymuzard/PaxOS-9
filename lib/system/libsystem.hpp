@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <stdexcept>
 #include <string>
+#include <color.hpp>
 
 #include <FileConfig.hpp>
 
@@ -284,6 +285,51 @@ namespace libsystem
          * @return connection success
          */
         bool connectWifi(std::string SSID, std::string passwd);
+
+        /**
+         * @brief Get the default Background Color of widgets
+         *
+         * @return color_t
+         */
+        color_t getBackgroundColor();
+
+        /**
+         * @brief get the default Text Color of widgets
+         *
+         * @return color_t
+         */
+        color_t getTextColor();
+
+        /**
+         * @brief get the default Border Color of widgets
+         *
+         * @return color_t
+         */
+        color_t getBorderColor();
+
+        /**
+         * @brief Set the default Background Color of widgets
+         *
+         * @param color
+         * @param save
+         */
+        void setBackgroundColor(color_t color, bool save);
+
+        /**
+         * @brief Set the default Text Color of widgets
+         *
+         * @param color
+         * @param save
+         */
+        void setTextColor(color_t color, bool save);
+
+        /**
+         * @brief Set the default Border Color of widgets
+         *
+         * @param color
+         * @param save
+         */
+        void setBorderColor(color_t color, bool save);
     }
 
 } // namespace libsystem
