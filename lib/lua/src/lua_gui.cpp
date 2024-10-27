@@ -202,6 +202,22 @@ std::string LuaGui::keyboard(const std::string &placeholder, const std::string &
     return o;
 }
 
+std::string LuaGui::keypad(const std::string &defaultText, Keypad::keyPadType type, int _passwordLength)
+{
+    auto key = new Keypad(defaultText, type, _passwordLength);
+
+    while (!hardware::getHomeButton() && !key->hasExitKeyBeenPressed())
+    {
+        eventHandlerApp.update();
+        key->updateAll();
+    }
+
+    std::string o = key->getText();
+
+    delete key;
+    return o;
+}
+
 void LuaGui::setMainWindow(LuaWindow *window)
 {
     this->mainWindow = window;

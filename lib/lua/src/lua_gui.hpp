@@ -36,6 +36,7 @@ public:
     LuaWindow *window();
     LuaSlider *slider(LuaWidget *parent, int x, int y, int width, int height, int minValue, int maxValue, int defaultValue);
     std::string keyboard(const std::string &placeholder, const std::string &defaultText);
+    std::string keypad(const std::string &defaultText, Keypad::keyPadType type = Keypad::KEYPAD_NUM, int _passwordLength = 4);
 
     void del(LuaWidget *widget);
 

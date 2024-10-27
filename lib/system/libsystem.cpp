@@ -357,6 +357,14 @@ bool libsystem::paxoConfig::connectWifi(std::string SSID, std::string passwd)
     return true;
 }
 
+color_t libsystem::paxoConfig::getScreenColor()
+{
+    if (systemConfig.has("settings.color.screenBackground"))
+        return static_cast<color_t>(systemConfig.get<uint16_t>("settings.color.screenBackground"));
+    else
+        return COLOR_WHITE;
+}
+
 color_t libsystem::paxoConfig::getBackgroundColor()
 {
     if (systemConfig.has("settings.color.background"))
@@ -381,6 +389,15 @@ color_t libsystem::paxoConfig::getBorderColor()
         return COLOR_BLACK;
 }
 
+void libsystem::paxoConfig::setScreenColor(color_t color, bool save)
+{
+    if (save)
+    {
+        systemConfig.set<uint16_t>("settings.color.screenBackground", static_cast<uint16_t>(color));
+        systemConfig.write();
+    }
+}
+
 void libsystem::paxoConfig::setBackgroundColor(color_t color, bool save)
 {
     if (save)
@@ -390,11 +407,6 @@ void libsystem::paxoConfig::setBackgroundColor(color_t color, bool save)
     }
 }
 
-/**
- * @brief Set the default Text Color of widgets
- *
- * @param color
- */
 void libsystem::paxoConfig::setTextColor(color_t color, bool save)
 {
     if (save)

@@ -403,6 +403,7 @@ void LuaFile::load()
                                  "setWindow", &LuaGui::setMainWindow,
                                  "getWindow", &LuaGui::getMainWindow,
                                  "keyboard", &LuaGui::keyboard,
+                                 "keypad", &LuaGui::keypad,
                                  "slider", &LuaGui::slider,
                                  "showInfoMessage", &LuaGui::showInfoMessage,
                                  "showWarningMessage", &LuaGui::showWarningMessage,
@@ -536,6 +537,10 @@ void LuaFile::load()
                                     "setFormatPercentage", &LuaSlider::setFormatPercentage,
                                     "onChange", &LuaSlider::onChange,
                                     sol::base_classes, sol::bases<LuaWidget>());
+
+        lua.set("KEYPAD_NUM", Keypad::KEYPAD_NUM);
+        lua.set("KEYPAD_PASSWORD", Keypad::KEYPAD_PASSWORD);
+        lua.set("KEYPAD_CALL", Keypad::KEYPAD_CALL);
 
         lua.set("SELECTION_UP", VerticalList::SelectionFocus::UP);
         lua.set("SELECTION_CENTER", VerticalList::SelectionFocus::CENTER);

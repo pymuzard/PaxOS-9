@@ -287,6 +287,13 @@ namespace libsystem
         bool connectWifi(std::string SSID, std::string passwd);
 
         /**
+         * @brief Get the default Color for the background of the screen
+         *
+         * @return color_t
+         */
+        color_t getScreenColor();
+
+        /**
          * @brief Get the default Background Color of widgets
          *
          * @return color_t
@@ -306,6 +313,14 @@ namespace libsystem
          * @return color_t
          */
         color_t getBorderColor();
+
+        /**
+         * @brief Set the default background colorof the screen
+         *
+         * @param color
+         * @param save
+         */
+        void setScreenColor(color_t color, bool save = false);
 
         /**
          * @brief Set the default Background Color of widgets

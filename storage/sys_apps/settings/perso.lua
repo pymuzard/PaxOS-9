@@ -13,18 +13,30 @@ function initColorScreen()
 
     local winColor = manageWindow()
 
-    local btnBack = gui:image(winColor, "back.png",10, 20, 20, 20, color.white)
-    btnBack:onClick(initMainScreen)
 
-    local title = gui:label(winColor, 40, 20, 280, 40)
-    title:setText("Couleurs")
-    title:setTextColor(97, 183, 157)
-    title:setFontSize(30)
+        local backbox = gui:box(winColor, 19, 19, 166, 27)
+            local icon = gui:image(backbox, "back.png", 0, 3, 18, 18)
+            local text = gui:label(backbox, 25, 0, 166, 27)
+                text:setFontSize(20)
+                text:setVerticalAlignment(CENTER_ALIGNMENT)
+                text:setText("Paramètres")
+            backbox:onClick(networkSettings)
+
+
+        local title = gui:label(winColor, 88, 55, 143, 42)
+            title:setFontSize(36)
+            title:setHorizontalAlignment(CENTER_ALIGNMENT)
+            title:setVerticalAlignment(CENTER_ALIGNMENT)
+            title:setText("Personalisation")
+
 
     local topRadio = 80
 
+    local boxCouleur = createBox(winColor, 0, 400)
+
+
     -- Gestion des boutons radios
-    radioText = gui:radio(winColor, 20, topRadio)
+    radioText = gui:radio(boxCouleur, 20, topRadio)
     local lblRadioText = gui:label(winColor, 45, topRadio, 50, 20)
     lblRadioText:setText("Texte")
 

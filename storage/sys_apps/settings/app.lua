@@ -197,6 +197,14 @@ function run() -- create the menu
 end
 
 
+function securitySettings()
+
+    --local keypad = gui:keypad("", KEYPAD_PASSWORD,5)
+     local keypad = gui:keypad("", KEYPAD_NUM, 3)
+    local keypad = gui:keypad("", KEYPAD_CALL, 3)
+    print("keypad = "..keypad)
+end
+
 
 local oldWin
 function manageWindow()
